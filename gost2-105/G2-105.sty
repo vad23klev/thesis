@@ -1,0 +1,864 @@
+% Copyright © 2013-2015 Alexey Mednikov, Valeriy Streltsov
+% This work is free. You can redistribute it and/or modify it under the
+% terms of the Do What The Fuck You Want To Public License, Version 2,
+% as published by Sam Hocevar. See http://www.wtfpl.net/ for more details.
+
+\ProvidesPackage{G2-105}[2003/07/07 v1.00 General reqs. GOST 2.105-95]
+\NeedsTeXFormat{LaTeX2e}
+
+\ExecuteOptions{a4paper,14pt,final,utf8}
+\ProcessOptions
+
+% Импорт пакетов
+\RequirePackage{cmap}
+\RequirePackage{pscyr}
+\renewcommand{\rmdefault}{ftm}
+\RequirePackage[T2A]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{textcomp}
+\RequirePackage[russian,english]{babel}
+\RequirePackage{amsmath}
+\RequirePackage{flafter}                 % контролирует, что флоаты встретятся не раньше, чем упомянуты в тексте
+%\RequirePackage{mathtext}                % русские буквы в формулах
+\RequirePackage[normalem]{ulem}          % подчеркивания
+\RequirePackage{setspace}                % почему-то приводит в порядок расстояние между строками в подписях оО
+\RequirePackage{ifthen}                  % кое-где не обойтись без if'ов :(
+\RequirePackage{float}                   % для корректного размещения рисунков
+
+
+% Импорт заголовков для ПЗ и ТЗ
+\input{TitleCommon.tex}
+\input{TitleAvtoreferat.tex}
+\input{TitleCPOne.tex}
+\input{TitleCPTwo.tex}
+\input{TitleCWOne.tex}
+\input{TitleCWTwo.tex}
+\input{TitleDirectorsReview.tex}
+\input{TitlePZ.tex}
+\input{TitleRDOperator.tex}
+\input{TitleRDProg.tex}
+\input{TitleRDSysProg.tex}
+\input{TitleRD.tex}
+\input{TitleReview.tex}
+\input{TitleSWOne.tex}
+\input{TitleSWTwo.tex}
+\input{TitleTP.tex}
+\input{TitleTZ.tex}
+
+% Префикс, стоящий перед номерами рисунков и таблиц
+\newcommand{\VSTUDocumentNumbersPrefix}{}
+% Сеттеры
+\newcommand*{\VSTUSetDocumentNumbersPrefix}[1]{
+  \renewcommand{\VSTUDocumentNumbersPrefix}{#1}
+}
+
+% Код документа (цифры) и его тип (выпускная работа бакалавра, магистерская диссертация и так далее)
+\newcommand{\VSTUDocumentCodeSuffix}{}
+\newcommand{\VSTUDocumentCode}{UNKNOWN-\VSTUDocumentCodeSuffix}
+\newcommand{\VSTUDocumentTypeDative}{выпускной работе бакалавра}   % в дательном падаже
+\newcommand{\VSTUDocumentTypeAccusative}{выпускную работу бакалавра} % в родительном падеже
+\newcommand{\VSTUDocumentTypeEng}{bachelor's thesis}
+% Сеттеры
+\newcommand*{\VSTUSetDocumentCode}[1]{
+  \renewcommand{\VSTUDocumentCode}{
+    \ifthenelse{\equal{\VSTUDocumentCodeSuffix}{}}
+    {#1}
+    {#1-\VSTUDocumentCodeSuffix}
+  }
+}
+\newcommand*{\VSTUSetDocumentTypeDative}[1]{
+  \renewcommand{\VSTUDocumentTypeDative}{#1}
+}
+\newcommand*{\VSTUSetDocumentTypeAccusative}[1]{
+  \renewcommand{\VSTUDocumentTypeAccusative}{#1}
+}
+\newcommand*{\VSTUSetDocumentTypeEng}[1]{
+  \renewcommand{\VSTUDocumentTypeEng}{#1}
+}
+
+% Исходные данные для выполнения работы
+\newcommand{\VSTUInitialData}{задание, выданное научным руководителем кафедры ПОАС, утвержденное приказом ректора университета}
+\newcommand{\VSTUInitialDataUL}{\uline{\VSTUInitialData\hfill}}
+%Сеттеры
+\newcommand*{\VSTUSetInitialData}[1]{
+  \renewcommand{\VSTUInitialData}{#1}
+  \renewcommand{\VSTUInitialDataUL}{\uline{#1\hfill}}
+}
+
+% Содержание основной части пояснительной записки и перечень графического материала
+\newcommand{\ulitem}[1]{
+  \item \uline{#1\hfill}
+}
+
+\newenvironment*{VSTUNumberedList}{
+  \renewcommand{\theenumi}{\arabic{enumi}}
+  \setlength\leftmargini{1.5em}
+  \setlength\leftmarginii{1.5em}
+  \begin{enumerate}
+}
+{\end{enumerate}}
+
+\newenvironment*{VSTUList}{
+  \renewcommand{\labelenumi}{}
+  \setlength\leftmargini{0mm}
+  \setlength\leftmarginii{0mm}
+  \setlength\labelsep{0mm}
+  \begin{enumerate}
+}
+{\end{enumerate}}
+
+\newcommand{\VSTUPZContents}{
+  \begin{VSTUList}
+    \ulitem{Что-то там раз}
+    \ulitem{Что-то там два}
+  \end{VSTUList}
+}
+\newcommand{\VSTUPZGraphics}{
+  \begin{VSTUNumberedList}
+    \ulitem{Графический материал раз}
+    \ulitem{Графический материал два}
+  \end{VSTUNumberedList}
+}
+%Сеттеры
+\newcommand*{\VSTUSetPZContents}[1]{
+  \renewcommand{\VSTUPZContents}{#1}
+}
+\newcommand*{\VSTUSetPZGraphics}[1]{
+  \renewcommand{\VSTUPZGraphics}{#1}
+}
+
+% Номер приказа (месяц задается строкой!)
+\newcommand{\VSTUOrderDate}{01}
+\newcommand{\VSTUOrderMonth}{января}
+\newcommand{\VSTUOrderYear}{\the\year}
+\newcommand{\VSTUOrderNumber}{1000--ст}
+% Сеттеры
+\newcommand*{\VSTUSetOrder}[4]{
+  \renewcommand{\VSTUOrderYear}{#4}
+  \renewcommand{\VSTUOrderMonth}{#3}
+  \renewcommand{\VSTUOrderDate}{#2}
+  \renewcommand{\VSTUOrderNumber}{#1}
+}
+
+% Получение строки приказа из параметров выше
+\newcommand{\VSTUOrder}{\textnumero~\VSTUOrderNumber\ от\ \VSTUOrderDate~\VSTUOrderMonth~\VSTUOrderYear~года}
+
+% Дата предоставления готовой работы - только число и месяц
+% TODO: использовать эти команды в титульниках по курсовикам?
+\newcommand{\VSTUDeadlineDate}{01}
+\newcommand{\VSTUDeadlineMonth}{января}
+\newcommand*{\VSTUSetDeadline}[2]{
+  \renewcommand{\VSTUDeadlineMonth}{#2}
+  \renewcommand{\VSTUDeadlineDate}{#1}
+}
+
+% Факультет, кафедра и направление
+\newcommand{\VSTUFaculty}{Электроники и вычислительной техники}
+\newcommand{\VSTUDepartment}{Программное обеспечение автоматизированных систем}
+\newcommand{\VSTUDepartmentCode}{10.19}
+\newcommand{\VSTUDirection}{230100 Информатика и вычислительная техника}
+% Сеттеры
+\newcommand*{\VSTUSetFaculty}[1]{
+  \renewcommand{\VSTUFaculty}{#1}
+}
+\newcommand*{\VSTUSetDepartment}[1]{
+  \renewcommand{\VSTUDepartment}{#1}
+}
+\newcommand*{\VSTUSetDepartmentCode}[1]{
+  \renewcommand{\VSTUDepartmentCode}{#1}
+}
+\newcommand*{\VSTUSetDirection}[1]{
+  \renewcommand{\VSTUDirection}{#1}
+}
+
+% Вспомогательные команды для группировки звания, должности и имени
+\newcommand{\VSTUCombineDegreeAndPost}[2]{
+  \ifthenelse{\equal{#1}{}}{#2}{#1,~#2}
+}
+\newcommand{\VSTUCombineDegreeAndName}[2]{
+  \ifthenelse{\equal{#1}{}}{#2}{#1~#2}
+}
+
+% ФИО заведующего кафедрой, степень/должность
+\newcommand{\VSTUHeadOfDepartmentFullName}{Фамилия Имя Отчество}
+\newcommand{\VSTUHeadOfDepartmentName}{И. О. Фамилия}
+\newcommand{\VSTUHeadOfDepartmentDegree}{звание}
+\newcommand{\VSTUHeadOfDepartmentPost}{должность}
+\newcommand{\VSTUHeadOfDepartmentDegreeAndName}{
+  \VSTUCombineDegreeAndName{\VSTUHeadOfDepartmentDegree}{\VSTUHeadOfDepartmentName}
+}
+% Сеттеры
+\newcommand*{\VSTUSetHeadOfDepartment}[4]{
+  \renewcommand{\VSTUHeadOfDepartmentFullName}{#4}
+  \renewcommand{\VSTUHeadOfDepartmentName}{#3}
+  \renewcommand{\VSTUHeadOfDepartmentDegree}{#2}
+  \renewcommand{\VSTUHeadOfDepartmentPost}{#1}
+}
+
+% ФИО руководителя, степень/должность
+\newcommand{\VSTUDirectorFullName}{Фамилия Имя Отчество}
+\newcommand{\VSTUDirectorName}{И. О. Фамилия}
+\newcommand{\VSTUDirectorDegree}{звание}
+\newcommand{\VSTUDirectorPost}{должность}
+\newcommand{\VSTUDirectorDegreeAndPost}{
+  \VSTUCombineDegreeAndPost{\VSTUDirectorDegree}{\VSTUDirectorPost}
+}
+\newcommand{\VSTUDirectorDegreeAndName}{
+  \VSTUCombineDegreeAndName{\VSTUDirectorDegree}{\VSTUDirectorName}
+}
+% Сеттеры
+\newcommand*{\VSTUSetDirector}[4]{
+  \renewcommand{\VSTUDirectorFullName}{#4}
+  \renewcommand{\VSTUDirectorName}{#3}
+  \renewcommand{\VSTUDirectorDegree}{#2}
+  \renewcommand{\VSTUDirectorPost}{#1}
+}
+
+% ФИО нормоконтролера, степень/должность
+\newcommand{\VSTUStandardsAdviserFullName}{Фамилия Имя Отчество}
+\newcommand{\VSTUStandardsAdviserName}{И. О. Фамилия}
+\newcommand{\VSTUStandardsAdviserDegree}{звание}
+\newcommand{\VSTUStandardsAdviserPost}{звание}
+\newcommand{\VSTUStandardsAdviserDegreeAndPost}{
+  \VSTUCombineDegreeAndPost{\VSTUStandardsAdviserDegree}{\VSTUStandardsAdviserPost}
+}
+\newcommand{\VSTUStandardsAdviserDegreeAndName}{
+  \VSTUCombineDegreeAndName{\VSTUStandardsAdviserDegree}{\VSTUStandardsAdviserName}
+}
+% Сеттеры
+\newcommand*{\VSTUSetStandardsAdviser}[4]{
+  \renewcommand{\VSTUStandardsAdviserFullName}{#4}
+  \renewcommand{\VSTUStandardsAdviserName}{#3}
+  \renewcommand{\VSTUStandardsAdviserDegree}{#2}
+  \renewcommand{\VSTUStandardsAdviserPost}{#1}
+}
+
+% ФИО рецензента, степень/должность
+\newcommand{\VSTUReviewerFullName}{Фамилия Имя Отчество}
+\newcommand{\VSTUReviewerName}{И. О. Фамилия}
+\newcommand{\VSTUReviewerDegree}{звание}
+\newcommand{\VSTUReviewerPost}{звание}
+\newcommand{\VSTUReviewerDegreeAndPost}{
+  \VSTUCombineDegreeAndPost{\VSTUReviewerDegree}{\VSTUReviewerPost}
+}
+\newcommand{\VSTUReviewerDegreeAndName}{
+  \VSTUCombineDegreeAndName{\VSTUReviewerDegree}{\VSTUReviewerName}
+}
+% Сеттеры
+\newcommand*{\VSTUSetReviewer}[4]{
+  \renewcommand{\VSTUReviewerFullName}{#4}
+  \renewcommand{\VSTUReviewerName}{#3}
+  \renewcommand{\VSTUReviewerDegree}{#2}
+  \renewcommand{\VSTUReviewerPost}{#1}
+}
+
+% ФИО студента, группа
+\newcommand{\VSTUStudentFullName}{Фамилия Имя Отчество}
+\newcommand{\VSTUStudentFullNameGenitive}{Фамилии Имени Отчества}
+\newcommand{\VSTUStudentFullNameEng}{FirstName LastName}
+\newcommand{\VSTUStudentName}{И. О. Фамилия}
+\newcommand{\VSTUStudentGroup}{ГРП--000}
+% Сеттеры
+\newcommand*{\VSTUSetStudent}[4]{
+  \renewcommand{\VSTUStudentFullNameGenitive}{#4}
+  \renewcommand{\VSTUStudentFullName}{#3}
+  \renewcommand{\VSTUStudentName}{#2}
+  \renewcommand{\VSTUStudentGroup}{#1}
+}
+\newcommand*{\VSTUSetStudentFullNameEng}[1]{
+  \renewcommand{\VSTUStudentFullNameEng}{#1}
+}
+% Команды для задания второго студента
+\newcommand{\VSTUSecondStudentFullName}{Фамилия Имя Отчество}
+\newcommand{\VSTUSecondStudentName}{И. О. Фамилия}
+\newcommand{\VSTUSetSecondStudent}[3]{
+  \renewcommand{\VSTUSecondStudentFullName}{#3}
+  \renewcommand{\VSTUSecondStudentName}{#2}
+  \renewcommand{\VSTUStudentGroup}{#1}
+}
+
+% Название работы на русском и английском языках
+\newcommand{\VSTUTitle}{Название работы}
+\newcommand{\VSTUTitleUL}{\uline{\VSTUTitle\hfill}}
+\newcommand{\VSTUTitleEng}{English title}
+\newcommand{\VSTUTitleULEng}{\uline{\VSTUTitleEng\hfill}}
+% Сеттеры
+\newcommand*{\VSTUSetTitle}[1]{
+    \renewcommand{\VSTUTitle}{#1}
+    \renewcommand{\VSTUTitleUL}{\uline{#1\hfill}}
+}
+\newcommand*{\VSTUSetTitleEng}[1]{
+    \renewcommand{\VSTUTitleEng}{#1}
+    \renewcommand{\VSTUTitleULEng}{\uline{#1\hfill}}
+}
+
+% Название дисциплины (для курсовых работ)
+\newcommand{\VSTUSubject}{Название дисциплины}
+% Сеттеры
+\newcommand*{\VSTUSetSubject}[1]{
+    \renewcommand{\VSTUSubject}{#1}
+}
+
+% Стиль страницы
+\RequirePackage{fancyhdr}
+
+% код документа в верхнем колонтитуле, номер страницы - в нижнем
+\fancypagestyle{plainhf} {
+  \setlength\headheight{25pt}
+  \fancyhf{}
+  \fancyhf[HCO,HCE]{\mdseries{\VSTUDocumentCode}\vspace{2mm}}
+  \fancyhf[FCO,FCE]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+% код документа в верхнем колонтитуле, нижний - пустой
+\fancypagestyle{plainh} {
+  \setlength\headheight{25pt}
+  \fancyhf{}
+  \fancyhf[HCO,HCE]{\mdseries{\VSTUDocumentCode}\vspace{2mm}}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\pagestyle{plainhf}
+\pagenumbering{arabic}
+\raggedbottom
+\onecolumn
+\sloppy
+
+% Абзацный отступ 15..17 мм
+\setlength\parindent{15mm}
+
+% Всякие разные длины
+\newcommand{\@pnumwidth}{1.55em}
+\renewcommand{\baselinestretch}{}
+\@lowpenalty 51
+\@medpenalty 151
+\@highpenalty 301
+\setlength\columnsep{10\p@}
+\setlength\columnseprule{0\p@}
+\setlength\lineskip{1\p@}
+\setlength\normallineskip{1\p@}
+\setlength\parskip{0\p@ \@plus \p@}
+\setlength\leftmargini{2.5em}
+\setlength\leftmarginii{2.2em}
+\setlength\labelsep{.5em}
+\setlength\labelwidth{\leftmargini}\addtolength\labelwidth{-\labelsep}
+\setlength\arraycolsep{5\p@}
+\setlength\tabcolsep{6\p@}
+\setlength\arrayrulewidth{.4\p@}
+\setlength\doublerulesep{2\p@}
+\setlength\tabbingsep{\labelsep}
+\setlength\fboxsep{3\p@}
+\setlength\fboxrule{.4\p@}
+
+% Счетчики общего числа страниц, таблиц, рисунков и источников
+\newcounter{totalpages}     \setcounter{totalpages}{0}
+\newcounter{totalfigures}   \setcounter{totalfigures}{0}
+\newcounter{totaltables}    \setcounter{totaltables}{0}
+\newcounter{totalequations} \setcounter{totalequations}{0}
+\newcounter{totalbibs}      \setcounter{totalbibs}{0}
+\newcounter{totalappendices}\setcounter{totalappendices}{0}
+
+% На последней странице ставятся метки с номерами
+%  - последней страницы
+%  - числа таблиц, имеющих caption
+%  - числа рисунков, имеющих caption
+\def\totalobjects@putlabel{
+  \addtocounter{totalpages}    {\c@page}
+  \addtocounter{totalfigures}  {\c@figure}
+  \addtocounter{totaltables}   {\c@table}
+  \addtocounter{totalequations}{\c@equation}
+
+  \addtocounter{totalfigures}   {-1}
+  \addtocounter{totaltables}    {-1}
+  \addtocounter{totalequations} {-1}
+  \addtocounter{totalbibs}      {-1}
+  \addtocounter{totalappendices}{-1}
+
+  \refstepcounter{totalpages}     \label{reftotalpages}
+  \refstepcounter{totalfigures}   \label{reftotalfigures}
+  \refstepcounter{totaltables}    \label{reftotaltables}
+  \refstepcounter{totalequations} \label{reftotalequations}
+  \refstepcounter{totalbibs}      \label{reftotalbibs}
+  \refstepcounter{totalappendices}\label{reftotalappendices}
+}
+\AtEndDocument{\totalobjects@putlabel}
+
+% Команды отображение общего числа ...
+\newcommand{\totalpages}     {\pageref{reftotalpages}}
+\newcommand{\totalfigures}   {\ref{reftotalfigures}}
+\newcommand{\totaltables}    {\ref{reftotaltables}}
+\newcommand{\totalequations} {\ref{reftotalequations}}
+\newcommand{\totalbibs}      {\ref{reftotalbibs}}
+\newcommand{\totalappendices}{\ref{reftotalappendices}}
+
+% Деление документа
+
+% Команды для подстройки вида заголовков
+% Расстояние между заголовком и текстом
+\newlength\GostAfterTitleSkip    \setlength\GostAfterTitleSkip    {15mm}
+\newlength\GostBetweenTitleSkip  \setlength\GostBetweenTitleSkip  {8mm}
+\newlength\GostBeforeTitleSkip   \setlength\GostBeforeTitleSkip   {15mm}
+\newlength\GostTitleIndent       \setlength\GostTitleIndent       {\parindent}
+\newlength\Gost@ChapterIndent    \setlength\Gost@ChapterIndent    {\GostTitleIndent}
+\newlength\Gost@MainChapterIndent\setlength\Gost@MainChapterIndent{\parindent}
+\newlength{\Gost@TitleDropSkip}
+\setlength\Gost@TitleDropSkip{\GostBetweenTitleSkip}
+\addtolength\Gost@TitleDropSkip{-\GostAfterTitleSkip}
+
+% Стиль всех заголовков
+\newcommand{\GostTitleStyle}{\hyphenpenalty 10000 \exhyphenpenalty 10000 \normalfont\mdseries\parshape 1 0cm \textwidth}
+\newcommand{\Gost@MainChapterStyle}{}
+\newcommand{\Gost@ChapterStyle}{\Gost@MainChapterStyle}
+
+% Удаление точки после номера раздела
+\AtBeginDocument{%
+\def\postchapter{\@aftersepkern}%
+\def\postsection{\@aftersepkern}%
+\def\postsubsection{\@aftersepkern}%
+\def\postsubsubsection{\@aftersepkern}%
+\def\postparagraph{\@aftersepkern}%
+\def\postsubparagraph{\@aftersepkern}%
+}%
+
+% Раздел
+\newcounter{chapter}
+\renewcommand{\thechapter}{\@arabic\c@chapter}
+\newcommand{\beforechapterskip}{\clearpage}
+\newcommand{\chapter}{%
+  \beforechapterskip%
+  \@startsection{chapter}{0}%
+  {\Gost@ChapterIndent}{0mm}{\GostAfterTitleSkip}%
+  {\GostTitleStyle\normalfont\Gost@ChapterStyle}%
+}
+\newcommand{\starchapter}[1]{
+  \chapter*{#1}
+  \addcontentsline{toc}{chapter}{#1}
+}
+\newcommand*{\chaptermark}[1]{}
+\newcommand{\apart}[2]{\chapter {#2\label{#1}}}
+\newcommand{\cpart}[2]{\chapter*{#2\label{#1}}}
+
+% Подраздел
+\newcounter{section}[chapter]
+\renewcommand{\thesection}{\thechapter.\@arabic\c@section}
+\newcommand{\section}{%
+  \@startsection{section}{1}%
+  {\GostTitleIndent}{\GostBeforeTitleSkip}{\GostAfterTitleSkip}%
+  {\GostTitleStyle}%
+}
+\newcommand{\starsection}[1]{
+  \section*{#1}
+  \addcontentsline{toc}{section}{#1}
+}
+\newcommand{\asubpart}[2]{\section{#2\label{#1}}}
+
+% Пункт
+\newcounter{subsection}[section]
+\renewcommand{\thesubsection}{\thesection.\@arabic\c@subsection}
+\newcommand{\subsection}{%
+  \@startsection{subsection}{2}%
+  {\GostTitleIndent}{\GostBeforeTitleSkip}{\GostAfterTitleSkip}%
+  {\GostTitleStyle}%
+}
+\newcommand{\starsubsection}[1]{
+  \subsection*{#1}
+  \addcontentsline{toc}{subsection}{#1}
+}
+\newcommand{\apara}[2]{\subsection{#2\label{#1}}}
+
+% Подпункт
+\newcounter{subsubsection}[subsection]
+\renewcommand{\thesubsubsection}{\thesubsection.\@arabic\c@subsubsection}
+\newcommand{\subsubsection}{%
+  \@startsection{subsubsection}{4}%
+  {\GostTitleIndent}{\GostBeforeTitleSkip}{\GostAfterTitleSkip}%
+  {\GostTitleStyle}%
+}
+\newcommand{\starsubsubsection}[1]{
+  \subsubsection*{#1}
+  \addcontentsline{toc}{subsubsection}{#1}
+}
+\newcommand{\asubpara}[2]{\subsubsection{#2\label{#1}}}
+
+% Команда ttl должна вставлятся между двумя заголовками
+\newcommand{\ttl}{\vspace{\Gost@TitleDropSkip}}
+
+% Нумеруются все заголовки
+\setcounter{secnumdepth}{3}
+% В оглавлении - тоже могут быть все.
+\setcounter{tocdepth}{4} %% virens: обычно только первый подраздел
+% Перенос в словах-с-дефисом
+\lccode`\-=`\-
+\defaulthyphenchar=127
+% Но переносы никому не нужны
+\sloppy
+\hyphenpenalty 10000
+\exhyphenpenalty 10000
+
+% Перечисления
+
+% Переопределим алфавит - нельзя использовать Ё, 3, Й, О, Ч, Ь, Ы, Ъ
+\providecommand\@asbuk[1]{ } % для совместимости со старыми версиями
+\renewcommand\@asbuk[1]{%
+  \ifcase #1%
+    \or а\or б\or в\or г\or д\or е\or ж\or и\or к\or л\or
+    м\or н\or п\or р\or с\or т\or у\or ф\or х\or ц\or
+    ш\or щ\or э\or ю\or я\else \@ctrerr
+  \fi
+}
+\providecommand\@Asbuk[1]{ } % для совместимости со старыми версиями
+\renewcommand\@Asbuk[1]{%
+  \ifcase #1%
+    \or А\or Б\or В\or Г\or Д\or Е\or Ж\or И\or К\or Л\or
+    М\or Н\or П\or Р\or С\or Т\or У\or Ф\or Х\or Ц\or
+    Ш\or Щ\or Э\or Ю\or Я\or\else \@ctrerr
+ \fi
+}
+
+\newlength{\GostItemGap}          \setlength\GostItemGap{2mm}
+\newlength{\GostItemIndent}       \setlength\GostItemIndent{\parindent}
+\newlength{\GostItemFirstIndent}  \setlength\GostItemFirstIndent{\GostItemIndent} \addtolength{\GostItemFirstIndent}{1.8em}
+
+\renewcommand{\@listI}{%
+  \setlength{\itemsep}{0mm}%                      пробел между последовательными элементами
+  \setlength{\topsep}{0mm}%                       отступ от текста до перечня
+  \setlength{\partopsep}{0mm}%                    дополнительный отступ, если начали абзац
+  \setlength{\parsep}{0mm}%                       расстояние между абзацами внутри пункта
+  \setlength{\leftmargin}{0mm}%                   левый отступ до текста
+  \setlength{\itemindent}{\GostItemFirstIndent}%  дополнительный левый отступ первой строчки
+  \setlength{\labelsep}{\GostItemGap}%            от метки до текста
+}
+
+\newlength{\GostItemIndentSecond} \setlength\GostItemIndentSecond{\GostItemFirstIndent} \addtolength{\GostItemIndentSecond}{\parindent}
+
+\renewcommand{\@listii}{%
+  \setlength{\itemsep}{0mm}%                      пробел между последовательными элементами
+  \setlength{\topsep}{0mm}%                       отступ от текста до перечня
+  \setlength{\partopsep}{0mm}%                    дополнительный отступ, если начали абзац
+  \setlength{\parsep}{0mm}%                       расстояние между абзацами внутри пункта
+  \setlength{\leftmargin}{0mm}%                   левый отступ до текста
+  \setlength{\itemindent}{\GostItemIndentSecond}% дополнительный левый отступ первой строчки
+  \setlength{\labelsep}{\GostItemGap}%            от метки до текста
+}
+
+% Ненумерованные перечисления
+\newcommand{\labelitemi}{--~}
+
+% Нумерованные перечисления
+\renewcommand{\theenumi}{\asbuk{enumi}}
+\renewcommand{\theenumii}{\arabic{enumii}}
+\newcommand{\labelenumi}{\theenumi)}
+\newcommand{\labelenumii}{\theenumii)}
+\renewcommand{\p@enumii}{\theenumi}
+
+% Ссылка на нумерованное перечисление
+\newcommand{\pref}[2]{%
+ перечисление~\ref{#2})~\ref{#1}}
+
+% Перечисление типа abbreviation - для списка сокращения
+\newenvironment{abbreviation}{%
+  \list{}{%
+    \labelwidth\z@ \itemindent-\leftmargin \leftmargin 25mm%
+    \let\makelabel\abbreviationlabel%
+  }%
+}{%
+  \endlist%
+}
+\newcommand*{\abbreviationlabel}[1]{\hspace\labelsep\normalfont #1~---}
+
+% Иллюстрации
+
+\newcommand{\@makecaption}{}
+\RequirePackage[center]{caption2}
+
+\def\fps@figure{bph}
+\def\ftype@figure{1}
+\def\ext@figure{lof}
+\def\fnum@figure{\figurename~\thefigure}
+
+\newcounter{figure}
+\newenvironment{figure} {\@float   {figure}}{\end@float}
+\newenvironment{figure*}{\@dblfloat{figure}}{\end@dblfloat}
+\renewcommand{\captionlabeldelim}{ ---}
+
+% Подписи и номера рисунков
+\addto\captionsrussian{\def\figurename{{Рисунок}}}
+\renewcommand{\thefigure}{\VSTUDocumentNumbersPrefix\arabic{figure}}
+
+% Таблицы
+
+\RequirePackage{longtable}
+
+\def\ftype@table{1}
+\def\ext@table{lof}
+\def\fnum@table{\tablename~\thetable}
+
+% Нумерация таблиц
+\renewcommand{\thetable}{\VSTUDocumentNumbersPrefix\arabic{table}}
+
+% Для выравнивания таблиц
+\LTpre = 10pt
+\LTpost = 24pt
+\LTleft = \z@
+\LTright = \fill
+\LTcapwidth = \linewidth
+\def\LT@makecaption#1#2#3{%
+  \LT@mcol\LT@cols l{\hbox to\z@{\parbox[t]\LTcapwidth{%
+    % Здесь происходит очередной грязный хак для подписи "Продолжение таблицы X"
+    % Чтобы она выводилась на последующих страницах, необходимо после \endfirsthead указать \caption{\space}\endhead
+    \ifx#3\space
+      #1{}Продолжение таблицы \thetable%
+    \else
+      #1{#2\captionlabeldelim{} }#3%
+      \vspace{\lineskip}%
+    \fi
+    \vspace{4mm}%
+    {\box\@tempboxa\hfil}%
+  \endgraf}%
+  \hss}}
+}
+% Хак для многостраничных таблиц
+\let\oldendfirsthead\endfirsthead
+\renewcommand\endfirsthead{
+  \oldendfirsthead
+  \caption{\space}\tabularnewline
+}
+
+% Для стирания последней горизонтальной линии при переносе таблицы
+\RequirePackage{booktabs}
+\RequirePackage{colortbl}
+
+\let\oldendhead\endhead
+\renewcommand{\endhead}{
+  \oldendhead%
+  \arrayrulecolor{white}%
+  \addlinespace[-1mm]%
+  \toprule[2mm]%
+  \endfoot%
+  \arrayrulecolor{black}%
+  \hline%
+  \endlastfoot%
+}
+
+% Формулы
+
+\RequirePackage{amssymb} % для русских "меньше или равно" "больше или равно"
+\RequirePackage{icomma}
+\input{leqno.clo}
+% Нумерация формул
+\renewcommand{\theequation}{\VSTUDocumentNumbersPrefix\arabic{equation}}
+% Специальный список для "где"
+\newlength\formulawhere
+\newenvironment*{VSTUFormulaWhereList}{
+  \settowidth{\formulawhere}{где}
+  \addtolength{\formulawhere}{\GostItemGap}
+  \renewcommand{\@listi}{%
+    \setlength{\itemsep}{0mm}%                      пробел между последовательными элементами
+    \setlength{\topsep}{0mm}%                       отступ от текста до перечня
+    \setlength{\partopsep}{0mm}%                    дополнительный отступ, если начали абзац
+    \setlength{\parsep}{0mm}%                       расстояние между абзацами внутри пункта
+    \setlength{\leftmargin}{0mm}%                   левый отступ до текста
+    \setlength{\itemindent}{\formulawhere}%         дополнительный левый отступ первой строчки
+    \setlength{\labelsep}{\GostItemGap}%            от метки до текста
+  }
+  \renewcommand{\labelenumi}{\ifthenelse{\equal{\theenumi}{а}}{где}{}}
+  \setlength\leftmargini{0mm}
+  \setlength\leftmarginii{0mm}
+  \setlength\labelsep{0mm}
+  \begin{enumerate}
+}
+{\end{enumerate}}
+
+% Приложения
+
+\newcounter{appendix}
+\gdef\theappendix{\VSTUDocumentNumbersPrefix\@Asbuk\c@appendix}
+
+% Общая команда для приложений
+\newcommand{\appendixcommon}[1]{
+  \addtocounter{appendix}{1}
+  \addtocounter{totalappendices}{1}
+
+  % Грязный хак нумерации рисунков/таблиц/формул внутри приложений.
+  % Сначала добавляем figure к totalfigures, а затем сбрасываем figure в 0.
+  % Аналогично и для table.
+  \addtocounter{totalfigures}{\c@figure}%
+  \addtocounter{totaltables}{\c@table}%
+  \addtocounter{totalequations}{\c@equation}%
+  \setcounter{figure}{0}%
+  \setcounter{table}{0}%
+  \setcounter{equation}{0}%
+
+  % Внешний вид номеров рисунков: сначала номер приложения,
+  % за ним номер рисунка/таблицы внутри приложения.
+  \renewcommand{\thefigure}{\theappendix.\arabic{figure}}%
+  \renewcommand{\thetable}{\theappendix.\arabic{table}}%
+  \renewcommand{\theequation}{\theappendix.\arabic{equation}}%
+
+  \addcontentsline{toc}{chapter}{\appendixname~\theappendix~---~{#1}}%
+}
+
+% Обычное приложение
+\newcommand{\appendix}[1]{
+  \clearpage
+  \appendixcommon{#1}
+  \begin{center}
+  {
+  \hyphenpenalty 10000
+  \exhyphenpenalty 10000
+  \appendixname~\theappendix~---~{#1}
+  }
+  \end{center}
+}
+
+% Приложение в виде отдельного документа
+\newcommand{\appendixdocument}[1]{
+  \clearpage
+  \leavevmode
+  \vfill
+  \vfill
+  \appendixcommon{#1}
+  \begin{center}
+  \appendixname~\theappendix\\
+  {#1}
+  \end{center}
+  \vfill
+  \vfill
+  \vfill
+}
+
+% Аннотация
+\newcommand{\abstract}[1]{
+  \clearpage
+  \thispagestyle{plainh}
+  \chapter*{#1}
+}
+
+% Всякие оглавления
+\newcommand{\tableofcontents}{
+  {
+  \hyphenpenalty 10000
+  \exhyphenpenalty 10000
+  \renewcommand{\contentsname}{Содержание}
+  \chapter*{\contentsname}\@starttoc{toc}
+  }
+}
+\newcommand{\listoffigures}{
+  \chapter*{\listfigurename}\@starttoc{lof}
+}
+\newcommand{\listoftables}{
+  \chapter*{\listtablename}\@starttoc{lot}
+}
+
+\def\l@chapter#1#2{\pagebreak[3]
+   \@tempdima 1.1em       % width of box holding chapter number
+   \begingroup
+     \parindent \z@ \rightskip \@pnumwidth
+     \parfillskip -\@pnumwidth
+     \leavevmode          % TeX command to enter horizontal mode.
+     #1\hfil \hbox to\@pnumwidth{\hss #2}\par%% <= \medskip inserted
+   \endgroup}
+\def\l@section#1#2{\pagebreak[3]
+   \@tempdima 2.1em       % width of box holding chapter number
+   \begingroup
+     \parindent \z@ \rightskip \@pnumwidth
+     \parfillskip -\@pnumwidth
+     \leavevmode          % TeX command to enter horizontal mode.
+     #1\hfil \hbox to\@pnumwidth{\hss #2}\par%% <= \medskip inserted
+   \endgroup}
+\def\l@subsection#1#2{\pagebreak[3]
+   \@tempdima 3.1em       % width of box holding chapter number
+   \begingroup
+     \parindent \z@ \rightskip \@pnumwidth
+     \parfillskip -\@pnumwidth
+     \leavevmode          % TeX command to enter horizontal mode.
+     #1\hfil \hbox to\@pnumwidth{\hss #2}\par%% <= \medskip inserted
+   \endgroup}
+\def\l@subsubsection#1#2{\pagebreak[3]
+   \@tempdima 4.1em       % width of box holding chapter number
+   \begingroup
+     \parindent \z@ \rightskip \@pnumwidth
+     \parfillskip -\@pnumwidth
+     \leavevmode          % TeX command to enter horizontal mode.
+     #1\hfil \hbox to\@pnumwidth{\hss #2}\par%% <= \medskip inserted
+   \endgroup}
+\newcommand*{\l@figure}{\@dottedtocline{1}{1.5em}{2.3em}}
+\newcommand*{\l@table}{\@dottedtocline{1}{1.5em}{2.3em}}
+\newcommand{\@tocrmarg}{2.55em}  % отступ правого края оглавления перенесенных строк
+\newcommand{\@dotsep}{1000}      % между точками в оглавлении в em
+
+% В магистерских диссертациях требуется писать слово "Глава"
+\RequirePackage{titletoc}
+\newcommand{\VSTUAddChapterWordToChapters}{%
+  \def\prechapter{\chaptername\ }%
+  \titlecontents{chapter}
+  [0mm]
+  {}
+  {\chaptername\ \thecontentslabel\ }
+  {}
+  {\hfill\contentspage}
+}
+% В ТЗ по ГОСТ 19 нужно Содержание по центру
+\newcommand{\VSTUMakeCenteredTOC}{%
+    \renewcommand{\tableofcontents}{
+      {
+      \hyphenpenalty 10000
+      \exhyphenpenalty 10000
+      \renewcommand{\contentsname}{\center{\hspace{-8mm}Содержание}}
+      \chapter*{\contentsname}\@starttoc{toc}
+      }
+    }
+}
+
+% Библиография
+\newdimen\bibindent
+\newenvironment{thebibliography}[1]{
+\renewcommand{\bibname}{Список использованных источников}
+  \clearpage
+  \chapter*{\bibname}
+  \ttl
+  \addcontentsline{toc}{chapter}{\bibname}%
+  \list{\@biblabel{\@arabic\c@enumiv}}{%
+    \@openbib@code%
+    \usecounter{enumiv}%
+    \let\p@enumiv\@empty%
+    \renewcommand{\theenumiv}{\@arabic\c@enumiv}%
+  }%
+}
+{
+  \setcounter{totalbibs}{\c@enumiv}%
+  \def\@noitemerr
+  {\@latex@warning{Empty `thebibliography' environment}}%
+  \endlist
+}
+\renewcommand{\@biblabel}{}%
+
+% Индекс
+\newenvironment{theindex}{
+                \columnseprule \z@
+                \columnsep 35\p@
+                \twocolumn[\@makeschapterhead{\indexname}]%
+                \thispagestyle{plainhf}\parindent\z@
+                \parskip\z@ \@plus .3\p@\relax
+                \let\item\@idxitem}
+               {\onecolumn}
+\newcommand{\newblock}{\hskip .11em\@plus.33em\@minus.07em}
+\let\@openbib@code\@empty
+\newcommand{\@idxitem}{\par\hangindent 40\p@}
+\newcommand{\subitem}{\@idxitem \hspace*{20\p@}}
+\newcommand{\subsubitem}{\@idxitem \hspace*{30\p@}}
+\newcommand{\indexspace}{\par \vskip 10\p@ \@plus5\p@ \@minus3\p@\relax}
+
+% Штуки для русского языка и переносов
+\righthyphenmin = 2
+\unitlength = 1mm
+\clubpenalty = 10000
+\widowpenalty = 10000
+
+\@beginparpenalty -\@lowpenalty
+\@endparpenalty -\@lowpenalty
+\@itempenalty -\@lowpenalty
+\skip\@mpfootins = \skip\footins
