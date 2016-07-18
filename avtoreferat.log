@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2016.4.13)  3 MAY 2016 16:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2016.4.13)  13 JUL 2016 20:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1135,9 +1135,8 @@ Underfull \hbox (badness 2608) in paragraph at lines 55--56
  []
 
 
-Underfull \hbox (badness 1629) in paragraph at lines 60--61
-\T2A/ftm/m/n/14.4 перечислений на основе синтаксического и семантического анали
-за, в
+Underfull \hbox (badness 10000) in paragraph at lines 60--61
+[]\T2A/ftm/m/n/14.4 Разработано программное средство использующее метод
  []
 
 
@@ -1147,21 +1146,44 @@ Underfull \hbox (badness 1199) in paragraph at lines 64--65
  []
 
 
-Underfull \hbox (badness 1342) in paragraph at lines 64--65
+Underfull \hbox (badness 2073) in paragraph at lines 64--65
 \T2A/ftm/m/n/14.4 перечисления в предложении на естественном языке. Реализованн
-ное
+ое
  []
 
 
-Underfull \hbox (badness 2608) in paragraph at lines 64--65
-\T2A/ftm/m/n/14.4 програмное средство позволяет проводить оценку ответа студент
-а на
+Underfull \hbox (badness 1496) in paragraph at lines 64--65
+\T2A/ftm/m/n/14.4 программное средство позволяет проводить оценку ответа студен
+та на
  []
 
 [3]
 Underfull \hbox (badness 10000) in paragraph at lines 72--73
 \T2A/ftm/m/n/14.4 докладывались на Внутривузовской научной конференции ВолгГТУ,
 
+ []
+
+
+Underfull \hbox (badness 1158) in paragraph at lines 78--79
+[]\T2A/ftm/bx/n/14.4 Первая глава \T2A/ftm/m/n/14.4 содержит анализ современног
+о состояния вопроса
+ []
+
+
+Underfull \hbox (badness 7888) in paragraph at lines 78--79
+\T2A/ftm/m/n/14.4 поддержки перечислений в вопросах с открытым ответом систем
+ []
+
+
+Underfull \hbox (badness 3302) in paragraph at lines 78--79
+\T2A/ftm/m/n/14.4 подходов к синтаксическому анализу естественного языка, сравн
+ение
+ []
+
+
+Underfull \hbox (badness 1173) in paragraph at lines 79--80
+\T2A/ftm/m/n/14.4 языка являющихся перечислениями, а также построение на их осн
+ове
  []
 
 [4] (/home/vadim/work/study/thesis/avtoreferat.aux) ) 
@@ -1172,11 +1194,11 @@ Here is how much of TeX's memory you used:
  9337 multiletter control sequences out of 15000+600000
  7796 words of font info for 21 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 50i,6n,47p,580b,217s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 50i,6n,47p,709b,217s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/share/texmf/fo
 nts/enc/t2a.enc}</usr/local/share/texmf/fonts/type1/public/pscyr/times.pfb></us
 r/local/share/texmf/fonts/type1/public/pscyr/timesbd.pfb>
-Output written on avtoreferat.pdf (4 pages, 42689 bytes).
+Output written on avtoreferat.pdf (4 pages, 43614 bytes).
 PDF statistics:
  27 PDF objects out of 1000 (max. 8388607)
  17 compressed objects within 1 object stream
